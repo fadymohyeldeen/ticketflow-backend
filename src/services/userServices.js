@@ -11,9 +11,13 @@ const generateJWT = (data) => {
 
 export const login = async ({ email, password }) => {
   const user = await adminModel.findOne({ email });
+
+  if (!user) {
+    return { data: "Email or password are incorrect!", statusCode: 401 };
+  }
   const passwordMatch = await bcrypt.compare(password, user.password);
 
-  if (!user || !passwordMatch) {
+  if (!passwordMatch) {
     return { data: "Email or password are incorrect!", statusCode: 401 };
   }
   return {
