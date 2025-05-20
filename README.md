@@ -12,22 +12,23 @@ A robust backend service for the TicketFlow ticket management system built with 
 
 ### Dependencies
 
-- Express 5.1.0
-- Mongoose 8.14.2
-- bcryptjs 3.0.2
-- jsonwebtoken 9.0.2
-- cors 2.8.5
-- dotenv 16.5.0
-- body-parser 2.2.0
+#### Production Dependencies
 
-## Environment Variables
+- React ^18.2.0
+- React DOM ^18.2.0
+- React Router DOM ^6.30.0
+- React Hot Toast ^2.5.2
+- React Toastify ^11.0.5
+- React Icons ^4.12.0
+- Recharts ^2.15.3
 
-Create a `.env` file in the root directory with the following variables:
+#### Development Dependencies
 
-```env
-JWT_KEY="rul8qGG5U1CayRAJKjWydWVlmPG8lbvtFaw3iLlLpV0rTLGeDt2M06Ah5DBOkUQw"
-MONGO_URL="mongodb://localhost:27017/Ticket"
-```
+- Vite ^5.1.4
+- TailwindCSS ^3.4.1
+- ESLint ^8.56.0
+- PostCSS ^8.4.35
+- Autoprefixer ^10.4.17
 
 ## Database Schema
 
@@ -41,7 +42,7 @@ The application uses MongoDB with the following main collections:
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/fadymohyeldeen/ticketflow-backend
 cd ticketflow-backend
 ```
 

@@ -6,12 +6,12 @@ import { initializeAdmin } from "./services/initializeAdmin.js";
 import cors from "cors";
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.API_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
