@@ -20,15 +20,6 @@ A robust backend service for the TicketFlow ticket management system built with 
 - dotenv 16.5.0
 - body-parser 2.2.0
 
-## Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```env
-JWT_KEY="rul8qGG5U1CayRAJKjWydWVlmPG8lbvtFaw3iLlLpV0rTLGeDt2M06Ah5DBOkUQw"
-MONGO_URL="mongodb://localhost:27017/Ticket"
-```
-
 ## Database Schema
 
 The application uses MongoDB with the following main collections:
