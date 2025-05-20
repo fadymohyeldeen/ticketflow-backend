@@ -1,4 +1,4 @@
-# TicketFlow Backend
+# TicketFlow-Backend
 
 A robust backend service for the TicketFlow ticket management system built with Node.js and Express.
 
@@ -19,15 +19,6 @@ A robust backend service for the TicketFlow ticket management system built with 
 - cors 2.8.5
 - dotenv 16.5.0
 - body-parser 2.2.0
-
-## Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```env
-JWT_KEY="rul8qGG5U1CayRAJKjWydWVlmPG8lbvtFaw3iLlLpV0rTLGeDt2M06Ah5DBOkUQw"
-MONGO_URL="mongodb://localhost:27017/Ticket"
-```
 
 ## Database Schema
 
@@ -51,13 +42,15 @@ cd ticketflow-backend
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
+
+   Create a `.env` file in the root directory with the necessary variables.
+
+4. Start the development server:
 
 ```bash
 npm run dev
 ```
-
-The server will be available at `http://localhost:5000` by default.
 
 ## Default Admin Credentials
 
