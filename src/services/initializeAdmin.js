@@ -14,5 +14,3 @@ export const initializeAdmin = async () => {
     await adminModel.insertOne(newAdmin);
   }
 };
-
-// remove role

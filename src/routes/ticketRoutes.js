@@ -1,21 +1,29 @@
 import express from "express";
+import { verifyToken } from "../middlewares/auth.js";
 import ticketModel from "../models/ticketModel.js";
 import {
   createTicket,
   getAllTickets,
   getTicketByID,
   updateTicket,
+  filterTickets,
 } from "../services/ticketServices.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/filter", async (req, res) => {
+  try {
+    const filteredTickets = await filterTickets(req.query);
+    res.json(filteredTickets);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/", verifyToken, async (req, res) => {
   try {
     const tickets = await getAllTickets();
-    res.status(200).json({
-      success: true,
-      data: tickets,
-    });
+    res.status(200).json(tickets);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -76,19 +84,3 @@ router.delete("/:id", async (req, res) => {
 });
 
 export default router;
-
-// update ticket:
-// const trackTicketChanges = require('../middlewares/trackTicketChanges');
-
-// router.put('/tickets/:ticketId', trackTicketChanges, async (req, res) => {
-//   // Update ticket logic
-// });
-// router.get("/tickets/:ticketId/history", async (req, res) => {
-//   const { ticketId } = req.params;
-
-//   const history = await TicketHistory.find({ ticketId }).populate(
-//     "changedBy",
-//     "name email"
-//   );
-//   res.json(history);
-// });

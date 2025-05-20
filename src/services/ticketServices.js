@@ -4,13 +4,24 @@ export const getAllTickets = async () => {
   try {
     return await ticketModel.find();
   } catch (err) {
+    console.error("Error fetching tickets:", err);
+    throw new Error(`Database error: ${err.message}`);
+  }
+};
+
+export const filterTickets = async (filterObject) => {
+  try {
+    const tickets = await ticketModel.find(filterObject);
+    return tickets;
+  } catch (err) {
+    console.error("Error fetching tickets:", err);
     throw new Error(`Database error: ${err.message}`);
   }
 };
 
 export const getTicketByID = async (id) => {
   try {
-    return await ticketModel.findById(id);
+    return await ticketModel.findById(id).lean();
   } catch (err) {
     throw new Error(`Database error: ${err.message}`);
   }
@@ -18,7 +29,8 @@ export const getTicketByID = async (id) => {
 
 export const createTicket = async (ticketData) => {
   try {
-    return await ticketModel.create(ticketData);
+    const ticket = new ticketModel(ticketData);
+    return await ticket.save();
   } catch (err) {
     throw new Error(`Database error: ${err.message}`);
   }
@@ -26,7 +38,13 @@ export const createTicket = async (ticketData) => {
 
 export const updateTicket = async (id, req) => {
   try {
-    return await ticketModel.findByIdAndUpdate(id, req.body, {
+    const updateData = { ...req.body };
+
+    if (updateData.updatedAt) {
+      delete updateData.updatedAt;
+    }
+
+    return await ticketModel.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     });

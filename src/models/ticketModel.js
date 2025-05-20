@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateTimestamp } from "../middlewares/ticketMiddleware.js";
 
 const ticketSchema = new mongoose.Schema({
   clientName: { type: String, required: true },
@@ -14,5 +15,7 @@ const ticketSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
+updateTimestamp(ticketSchema);
 
 export default mongoose.model("Ticket", ticketSchema);
