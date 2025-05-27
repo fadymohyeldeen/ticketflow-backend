@@ -2,59 +2,55 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import userRoutes from "./routes/adminRoutes.js";
-import ticketRoutes from "./routes/ticketRoutes.js";
-import { initializeAdmin } from "./services/initializeAdmin.js";
 
 dotenv.config();
 
 const app = express();
-app.use(express.json());
 
+// Middleware setup
+app.use(express.json());
 app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
         ? process.env.PRODUCTION_URL
         : process.env.API_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
-app.options("*", cors());
-
-app.get("/", (req, res) => {
-  res.send("Railway!");
-});
-
-app.use("/user", userRoutes);
-app.use("/ticket", ticketRoutes);
+// Health check endpoint (MUST HAVE)
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "healthy" });
+  res.status(200).json({ status: "OK" });
 });
 
-async function startServer() {
+// Basic route
+app.get("/", (req, res) => {
+  res.send("TicketFlow Backend is running");
+});
+
+// Server startup
+const startServer = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
-    console.log("MongoDB connected successfully!");
-    await initializeAdmin();
+    console.log("MongoDB connected");
 
     const PORT = process.env.PORT || 8080;
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+    const server = app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+
+    // Handle shutdown gracefully
+    process.on("SIGTERM", () => {
+      server.close(() => {
+        console.log("Server closed");
+        process.exit(0);
+      });
     });
   } catch (err) {
-    console.log("Failed to connect to MongoDB. " + err);
+    console.error("Server failed to start", err);
+    process.exit(1);
   }
-}
+};
 
 startServer();
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    error: err.message || "An unexpected error occurred",
-  });
-});
