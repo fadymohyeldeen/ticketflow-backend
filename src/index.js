@@ -5,6 +5,8 @@ import cors from "cors";
 import userRoutes from "./routes/adminRoutes.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import { initializeAdmin } from "./services/initializeAdmin.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Load environment variables
 dotenv.config();
@@ -39,6 +41,12 @@ app.use(
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.options('/user', cors()); // For user routes
+app.options('/user/*', cors()); // For nested user routes
+app.options('/ticket', cors()); // For ticket collection
+app.options('/ticket/*', cors()); // For individual tickets
+
 
 // API Documentation at Root
 app.get("/", (req, res) => {
@@ -92,6 +100,11 @@ app.use((err, req, res, next) => {
         ? err.message
         : "Internal Server Error",
   });
+});
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "favicon.ico"));
 });
 
 // Database Connection and Server Startup
