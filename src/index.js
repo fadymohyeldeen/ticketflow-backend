@@ -4,6 +4,11 @@ import userRoutes from "./routes/adminRoutes.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import { initializeAdmin } from "./services/initializeAdmin.js";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
+console.log("MONGO_URL:", process.env.MONGO_URL);
+console.log("API_URL:", process.env.API_URL);
 
 const app = express();
 app.use(express.json());
@@ -21,7 +26,10 @@ app.use(
 );
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("MongoDB connected successfuly.");
   })
