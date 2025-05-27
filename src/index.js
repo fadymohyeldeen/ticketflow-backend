@@ -17,6 +17,7 @@ const app = express();
 const allowedOrigins = [
   "https://ticketflow-omega.vercel.app",
   "https://ticketflow-c7ugo931j-fadymohyel-deens-projects.vercel.app",
+  
 ];
 
 app.use(
