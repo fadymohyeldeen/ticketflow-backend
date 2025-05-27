@@ -6,8 +6,27 @@ import userRoutes from "./routes/adminRoutes.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import { initializeAdmin } from "./services/initializeAdmin.js";
 
-dotenv.config();
 const app = express();
+const originalUse = app.use.bind(app);
+
+app.use = function (path, ...handlers) {
+  if (typeof path === "string") {
+    console.log("app.use called with path:", path);
+  } else if (typeof path === "function") {
+    console.log(
+      "app.use called with middleware function:",
+      path.name || "<anonymous>"
+    );
+    // Shift arguments since no path is provided, path is actually the first handler
+    handlers.unshift(path);
+    path = "/"; // or null to apply to all paths
+  } else {
+    console.log("app.use called with unknown first argument:", path);
+  }
+  return originalUse(path, ...handlers);
+};
+
+dotenv.config();
 app.use(express.json());
 
 app.use(
@@ -17,8 +36,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-app.options("*", cors());
 
 app.get("/", (req, res) => {
   res.send("Railway!");
