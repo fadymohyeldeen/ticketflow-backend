@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.API_URL,
+    origin: "https://ticketflow-ap2vitubu-fadymohyel-deens-projects.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
