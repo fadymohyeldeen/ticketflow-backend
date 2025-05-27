@@ -30,18 +30,25 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
+app.get("/", (req, res) => {
+  res.json({
+    status: "running",
+    api: {
+      v1: {
+        user: "/user",
+        ticket: "/ticket",
+      },
+    },
+  });
+});
+
 // Essential middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Critical health check endpoint
 app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-    nodeVersion: process.version,
-    memoryUsage: process.memoryUsage(),
-  });
+  res.status(200).json({ status: "ok" });
 });
 
 // Server startup with proper error handling
@@ -58,6 +65,13 @@ const startServer = async () => {
     const server = app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`Health check: http://0.0.0.0:${PORT}/health`);
+    });
+
+    app.use((req, res) => {
+      res.status(404).json({
+        error: "Not Found",
+        availableRoutes: ["/user", "/ticket"],
+      });
     });
 
     // Graceful shutdown
