@@ -9,9 +9,13 @@ const app = express();
 const port = process.env.PORT;
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Railway!");
+});
+
 app.use(
   cors({
-    origin: process.env.API_URL,
+    origin: process.env.API_URL, 
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
