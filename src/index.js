@@ -6,7 +6,6 @@ import { initializeAdmin } from "./services/initializeAdmin.js";
 import cors from "cors";
 
 const app = express();
-const port = process.env.PORT;
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -15,7 +14,7 @@ app.get("/", (req, res) => {
 
 app.use(
   cors({
-    origin: process.env.API_URL, 
+    origin: process.env.API_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -41,8 +40,4 @@ app.use((err, req, res, next) => {
     success: false,
     error: err.message || "An unexpected error occurred",
   });
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}.`);
 });
