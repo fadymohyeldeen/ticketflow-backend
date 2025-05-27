@@ -13,7 +13,10 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.API_URL,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.PRODUCTION_URL
+        : process.env.API_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -27,6 +30,9 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRoutes);
 app.use("/ticket", ticketRoutes);
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy" });
+});
 
 async function startServer() {
   try {
@@ -34,7 +40,7 @@ async function startServer() {
     console.log("MongoDB connected successfully!");
     await initializeAdmin();
 
-    const PORT = process.env.PORT || 5000;
+    const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
