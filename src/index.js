@@ -15,8 +15,8 @@ const app = express();
 
 // Enhanced CORS configuration
 const allowedOrigins = [
-  "https://ticketflow-ap2vitubu-fadymohyel-deens-projects.vercel.app",
-  "https://ticketflow-backend-production.up.railway.app",
+  "https://ticketflow-4jpcu7n0o-fadymohyel-deens-projects.vercel.app",
+  "https://ticketflow-omega.vercel.app",
 ];
 
 app.use(
@@ -42,11 +42,10 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.options('/user', cors()); // For user routes
-app.options('/user/*', cors()); // For nested user routes
-app.options('/ticket', cors()); // For ticket collection
-app.options('/ticket/*', cors()); // For individual tickets
-
+app.options("/user", cors()); // For user routes
+app.options("/user/*", cors()); // For nested user routes
+app.options("/ticket", cors()); // For ticket collection
+app.options("/ticket/*", cors()); // For individual tickets
 
 // API Documentation at Root
 app.get("/", (req, res) => {
