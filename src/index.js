@@ -38,14 +38,15 @@ app.use(
   })
 );
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.options("*", cors());
 app.options("/user", cors()); // For user routes
 app.options("/user/*", cors()); // For nested user routes
 app.options("/ticket", cors()); // For ticket collection
 app.options("/ticket/*", cors()); // For individual tickets
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // API Documentation at Root
 app.get("/", (req, res) => {
@@ -99,6 +100,11 @@ app.use((err, req, res, next) => {
         ? err.message
         : "Internal Server Error",
   });
+});
+
+app.use((req, res, next) => {
+  console.log("Incoming Origin:", req.headers.origin);
+  next();
 });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
