@@ -1,21 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
 import userRoutes from "./routes/adminRoutes.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import { initializeAdmin } from "./services/initializeAdmin.js";
-import cors from "cors";
-import dotenv from "dotenv";
 
 dotenv.config();
-console.log("MONGO_URL:", process.env.MONGO_URL);
-console.log("API_URL:", process.env.API_URL);
-
 const app = express();
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("Railway!");
-});
 
 app.use(
   cors({
@@ -25,22 +18,24 @@ app.use(
   })
 );
 
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB connected successfuly.");
-  })
-  .catch((err) => {
-    console.log("Failed to connect to MongoDB." + err);
-  });
+app.get("/", (req, res) => {
+  res.send("Railway!");
+});
 
 app.use("/user", userRoutes);
 app.use("/ticket", ticketRoutes);
 
-initializeAdmin();
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("MongoDB connected successfully!");
+    await initializeAdmin();
+  } catch (err) {
+    console.log("Failed to connect to MongoDB." + err);
+  }
+}
+
+startServer();
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
