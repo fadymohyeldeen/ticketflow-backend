@@ -15,8 +15,9 @@ const app = express();
 
 // Enhanced CORS configuration
 const allowedOrigins = [
-  "https://ticketflow-frontend.vercel.app/",
-  "https://ticketflow-frontend-fadymohyel-deens-projects.vercel.app/",
+  "https://ticketflow-frontend.vercel.app",
+  "https://ticketflow-frontend-fadymohyel-deens-projects.vercel.app",
+  "https://ticketflow-frontend-g3bnfs6vp-fadymohyel-deens-projects.vercel.app",
 ];
 
 app.use(
