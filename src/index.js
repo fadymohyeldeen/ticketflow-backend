@@ -14,10 +14,9 @@ dotenv.config();
 const app = express();
 
 // Enhanced CORS configuration
-const allowedOrigins = [
-  "https://ticketflow-frontend.vercel.app",
-  "https://ticketflow-frontend-g3bnfs6vp-fadymohyel-deens-projects.vercel.app",
-];
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+  : [];
 
 app.use(
   cors({
